@@ -1,10 +1,10 @@
-Insert 10 10 5 5
-Insert 10 -10 5 5
-Find 10 10
-Find 10 -10
-Insert 1 -10 2 1
-Delete -10 -10
-Update -10 8 5 5
-Insert 30 30 12 7
-Insert 120 -100 5 5
-Dump
+insert 10 10 5 5;
+insert 10 -10 5 5;
+find 10 10;
+find 10 -10;
+insert 1 -10 2 1;
+delete -10 -10;
+update -10 8 5 5;
+insert 30 30 12 7;
+insert 120 -100 5 5;
+dump;
