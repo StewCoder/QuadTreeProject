@@ -6,7 +6,7 @@ import java.io.IOException;
 
 /**
  * The Main class provides a command-line interface for interacting with a Quadtree.
- * It processes commands such as "Insert", "Find", "Delete", "Dump", and "Update"
+ * It processes commands such as "insert", "find", "delete", "dump", and "update"
  * from a file to manipulate the Quadtree.
  */
 public class Main {
@@ -30,23 +30,33 @@ public class Main {
         try (BufferedReader reader = new BufferedReader(new FileReader(args[0]))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(" ");
-                String command = parts[0];
+                // Remove any trailing semicolon and trim any leading/trailing spaces
+                line = line.replace(";", "").trim();
+
+                // Debug: Print the processed line after removing the semicolon
+                //System.out.println("Processed line: " + line);
+
+                // Skip empty lines
+                if (line.isEmpty()) continue;
+
+                // Split the line into command and parameters
+                String[] parts = line.split("\\s+");  // Split by one or more spaces
+                String command = parts[0].toLowerCase();  // Convert the command to lowercase
 
                 // Process each command
                 switch (command) {
-                    case "Insert":
+                    case "insert":
                         // Insert a rectangle into the Quadtree
                         double x = Double.parseDouble(parts[1]);
                         double y = Double.parseDouble(parts[2]);
                         double length = Double.parseDouble(parts[3]);
                         double width = Double.parseDouble(parts[4]);
                         if (!quadtree.insert(x, y, length, width)) {
-                            System.out.println("You can not double insert at a position.");
+                            System.out.println("You cannot double-insert at a position.");
                         }
                         break;
 
-                    case "Find":
+                    case "find":
                         // Find a rectangle at the given coordinates
                         x = Double.parseDouble(parts[1]);
                         y = Double.parseDouble(parts[2]);
@@ -58,7 +68,7 @@ public class Main {
                         }
                         break;
 
-                    case "Delete":
+                    case "delete":
                         // Delete a rectangle at the given coordinates
                         x = Double.parseDouble(parts[1]);
                         y = Double.parseDouble(parts[2]);
@@ -67,12 +77,12 @@ public class Main {
                         }
                         break;
 
-                    case "Dump":
+                    case "dump":
                         // Dump the Quadtree contents
                         quadtree.dump();
                         break;
 
-                    case "Update":
+                    case "update":
                         // Update the size of an existing rectangle
                         x = Double.parseDouble(parts[1]);
                         y = Double.parseDouble(parts[2]);
@@ -95,6 +105,12 @@ public class Main {
         } catch (IOException e) {
             // Handle any IO exceptions that occur while reading the file
             e.printStackTrace();
+        } catch (NumberFormatException e) {
+            // Handle parsing errors for numbers
+            System.out.println("Error parsing number: " + e.getMessage());
+        } catch (ArrayIndexOutOfBoundsException e) {
+            // Handle any missing parameters
+            System.out.println("Error: Command has missing parameters.");
         }
     }
 }
